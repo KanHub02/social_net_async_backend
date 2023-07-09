@@ -1,17 +1,20 @@
+import datetime
+import uuid
+
 from typing import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, DeclarativeBase, declarative_base
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, Integer, DateTime, Boolean
 
 from src.config import DATABASE_URL
 
-
 Base = declarative_base()
 
-
 engine = create_async_engine(DATABASE_URL)
-async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+async_session_maker = sessionmaker(
+    engine, class_=AsyncSession, expire_on_commit=False)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
